@@ -1,10 +1,13 @@
+# rest/room.py
+
 import json
 
-from flask import Blueprint, Response
+from flask import Blueprint, Response, request
 
 from rentomatic.repository import memrepo as mr
 from rentomatic.use_cases import room_list_use_case as uc
 from rentomatic.serializers import room_json_serializer as ser
+from rentomatic.request_objects import room_list_request_object as req
 
 blueprint = Blueprint('room', __name__)
 
@@ -36,7 +39,15 @@ room3 = {
 def room():
     repo = mr.MemRepo([room1, room2, room3])
     use_case = uc.RoomListUseCase(repo)
-    result = use_case.execute()
 
-    return Response(json.dumps(result, cls=ser.RoomJsonEncoder),
+    query_string = {'filters':{}}
+
+    for arg, values in request.args.items():
+        if arg.startswith('filter_'):
+            query_string['filters'][arg.replace('filter_','')] = values
+
+    request_object = req.RoomListRequestObject.from_dict(query_string)
+    response_object = use_case.execute(request_object)
+
+    return Response(json.dumps(response_object.value, cls=ser.RoomJsonEncoder),
                     mimetype='application/json', status=200)

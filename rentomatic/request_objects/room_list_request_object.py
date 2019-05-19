@@ -1,3 +1,5 @@
+# room_list_request_object.py
+
 import collections
 
 class InvalidRequestObject:
