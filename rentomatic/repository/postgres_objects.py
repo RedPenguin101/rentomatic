@@ -1,9 +1,9 @@
 # repository/postgres_objects.py
 
 from sqlalchemy import Column, Integer, String, Float
-from sqlalchemy.ext.declatative import declarative_base
+from sqlalchemy.ext.declarative import declarative_base
 
-Base = delcarative_base()
+Base = declarative_base()
 
 class Room(Base):
     __tablename__ = 'room'
