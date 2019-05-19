@@ -1,0 +1,8 @@
+# test_postgresrepo.py
+
+import pytest
+
+pytestmark = pytest.mark.integration
+
+def test_dummy():
+    pass
