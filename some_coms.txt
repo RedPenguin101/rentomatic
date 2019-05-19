@@ -1,0 +1,8 @@
+flask run
+
+docker run --name rentomatic -e POSTGRES_PASSWORD=rentomaticdb -p 5432:5432 -d postgres
+docker run -it --rm --link rentomatic:rentomatic postgres psql -h rentomatic -U postgres
+
+\c rentomaticdb
+\dt
+
