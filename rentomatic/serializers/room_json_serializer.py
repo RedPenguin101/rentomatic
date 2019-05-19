@@ -1,5 +1,5 @@
 import json
-from rentomatic.domain import room as r
+
 
 class RoomJsonEncoder(json.JSONEncoder):
 

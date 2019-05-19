@@ -23,34 +23,39 @@ def pytest_runtest_setup(item):
         pytest.skip("need --integration option to run")
 
 
+# fixture to contain the paramters of the docker db to be
+# spun up for integration tests.
 @pytest.fixture(scope='session')
 def docker_setup(docker_ip):
     return {
             'postgres': {
-                'dbname':'rentomaticdb',
-                'user':'postgres',
-                'password':'rentomaticdb',
-                'host':docker_ip
+                'dbname': 'rentomaticdb',
+                'user': 'postgres',
+                'password': 'rentomaticdb',
+                'host': docker_ip
                 }
             }
 
-
+# creates the temp file that is called by the docker_compose_file
 @pytest.fixture(scope='session')
 def docker_tmpfile():
     f = tempfile.mkstemp()
     yield f
     os.remove(f[1])
 
+# the pytest-docker plugin requires this fixture
+# that returns a YAML formatted file with the config.
+# this fixture creates and returns this config
 @pytest.fixture(scope='session')
 def docker_compose_file(docker_tmpfile, docker_setup):
     content = {
-            'version':'3.1',
+            'version': '3.1',
             'services': {
                 'postgresql': {
                     'restart': 'always',
-                    'image':'postgres',
-                    'ports':["5432:5432"],
-                    'environment':[
+                    'image': 'postgres',
+                    'ports': ["5432:5432"],
+                    'environment': [
                         'POSTGRES_PASSWORD={}'.format(
                             docker_setup['postgres']['password']
                             )

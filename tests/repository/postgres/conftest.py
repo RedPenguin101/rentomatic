@@ -8,6 +8,7 @@ import pytest
 
 from rentomatic.repository.postgres_objects import Base, Room
 
+
 def pg_is_responsive(ip, docker_setup):
     try:
         conn = psycopg2.connect(
@@ -23,6 +24,7 @@ def pg_is_responsive(ip, docker_setup):
     except psycopg2.OperationalError as exp:
         return False
 
+
 @pytest.fixture(scope='session')
 def pg_engine(docker_ip, docker_services, docker_setup):
     docker_services.wait_until_responsive(
@@ -30,7 +32,7 @@ def pg_engine(docker_ip, docker_services, docker_setup):
             check=lambda: pg_is_responsive(docker_ip, docker_setup)
             )
 
-    conn_str="postgresql+psycopg2://{}:{}@{}/{}".format(
+    conn_str = "postgresql+psycopg2://{}:{}@{}/{}".format(
             docker_setup['postgres']['user'],
             docker_setup['postgres']['password'],
             docker_setup['postgres']['host'],
@@ -45,6 +47,7 @@ def pg_engine(docker_ip, docker_services, docker_setup):
 
     conn.close()
 
+
 @pytest.fixture(scope='session')
 def pg_session_empty(pg_engine):
     Base.metadata.create_all(pg_engine)
@@ -58,13 +61,14 @@ def pg_session_empty(pg_engine):
 
     session.close()
 
+
 @pytest.fixture(scope='function')
 def pg_data():
     return [
             {
-                'code':'f853578c-fc0f-4e65-81b8-566c5dffa35a',
-                'size':215,
-                'price':39,
+                'code': 'f853578c-fc0f-4e65-81b8-566c5dffa35a',
+                'size': 215,
+                'price': 39,
                 'longitude': -0.09998975,
                 'latitude': 51.75436293,
             },
@@ -90,6 +94,7 @@ def pg_data():
                 'latitude': 51.39916678,
             }
         ]
+
 
 @pytest.fixture(scope='function')
 def pg_session(pg_session_empty, pg_data):

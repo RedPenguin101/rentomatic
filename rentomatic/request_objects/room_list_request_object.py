@@ -2,19 +2,21 @@
 
 import collections
 
+
 class InvalidRequestObject:
 
     def __init__(self):
         self.errors = []
 
     def add_error(self, parameter, message):
-        self.errors.append({'parameter':parameter, 'message':message})
+        self.errors.append({'parameter': parameter, 'message': message})
 
     def has_errors(self):
         return len(self.errors) > 0
 
     def __bool__(self):
         return False
+
 
 class ValidObjectRequest:
 
@@ -25,11 +27,12 @@ class ValidObjectRequest:
     def __bool__(self):
         return True
 
+
 class RoomListRequestObject(ValidObjectRequest):
 
-    accepted_filters = ['code__eq','price__eq','price__lt','price__gt']
+    accepted_filters = ['code__eq', 'price__eq', 'price__lt', 'price__gt']
 
-    def __init__(self, filters = None):
+    def __init__(self, filters=None):
         self.filters = filters
 
     @classmethod
@@ -38,7 +41,7 @@ class RoomListRequestObject(ValidObjectRequest):
 
         if 'filters' in adict:
             if not isinstance(adict['filters'], collections.Mapping):
-                invalid_req.add_error('filters','Is not iterable')
+                invalid_req.add_error('filters', 'Is not iterable')
                 return invalid_req
 
             for key, value in adict['filters'].items():
@@ -51,7 +54,7 @@ class RoomListRequestObject(ValidObjectRequest):
         if invalid_req.has_errors():
             return invalid_req
 
-        return cls(filters=adict.get('filters',None))
+        return cls(filters=adict.get('filters', None))
 
     def __bool__(self):
         return True

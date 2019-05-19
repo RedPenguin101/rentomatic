@@ -4,6 +4,7 @@ from unittest import mock
 from rentomatic.domain.room import Room
 from rentomatic.response_objects import response_objects as res
 
+
 room_dict = {
     'code': '3251a5bd-86be-428d-8ae9-6e51a8048c33',
     'size': 200,
@@ -13,6 +14,7 @@ room_dict = {
 }
 room = Room.from_dict(room_dict)
 rooms = [room]
+
 
 @mock.patch('rentomatic.use_cases.room_list_use_case.RoomListUseCase')
 def test_get(mock_use_case, client):
@@ -29,6 +31,7 @@ def test_get(mock_use_case, client):
     assert http_response.status_code == 200
     assert http_response.mimetype == 'application/json'
 
+
 @mock.patch('rentomatic.use_cases.room_list_use_case.RoomListUseCase')
 def test_get_with_filters(mock_use_case, client):
     mock_use_case().execute.return_value = res.ResponseSuccess(rooms)
@@ -39,6 +42,6 @@ def test_get_with_filters(mock_use_case, client):
 
     mock_use_case().execute.assert_called()
     args, kwargs = mock_use_case().execute.call_args
-    assert args[0].filters == {'price__gt':'2', 'price__lt':'6'}
+    assert args[0].filters == {'price__gt': '2', 'price__lt': '6'}
     assert http_response.status_code == 200
     assert http_response.mimetype == 'application/json'

@@ -18,11 +18,11 @@ class Room:
 
     def to_dict(self):
         return {
-            'code':self.code,
-            'size':self.size,
-            'price':self.price,
-            'longitude':self.longitude,
-            'latitude':self.latitude,
+            'code': self.code,
+            'size': self.size,
+            'price': self.price,
+            'longitude': self.longitude,
+            'latitude': self.latitude,
         }
 
     def __eq__(self, other):

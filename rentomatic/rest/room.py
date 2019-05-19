@@ -35,16 +35,17 @@ room3 = {
     'latitude': 51.45994069,
 }
 
+
 @blueprint.route('/rooms', methods=['GET'])
 def room():
     repo = mr.MemRepo([room1, room2, room3])
     use_case = uc.RoomListUseCase(repo)
 
-    query_string = {'filters':{}}
+    query_string = {'filters': {}}
 
     for arg, values in request.args.items():
         if arg.startswith('filter_'):
-            query_string['filters'][arg.replace('filter_','')] = values
+            query_string['filters'][arg.replace('filter_', '')] = values
 
     request_object = req.RoomListRequestObject.from_dict(query_string)
     response_object = use_case.execute(request_object)

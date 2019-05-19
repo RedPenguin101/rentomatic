@@ -14,12 +14,12 @@ class ResponseFailure:
 
     @property
     def value(self):
-        return {'type':self.type, 'message':self.message}
+        return {'type': self.type, 'message': self.message}
 
     @classmethod
     def build_from_invalid_request_object(cls, request_object):
         message = "\n".join(["{}: {}".format(err['parameter'], err['message'])
-            for err in request_object.errors])
+                            for err in request_object.errors])
         return cls(cls.PARAMETERS_ERROR, message)
 
     @classmethod
@@ -37,8 +37,10 @@ class ResponseFailure:
     def __bool__(self):
         return False
 
+
 class ResponseSuccess:
     SUCCESS = 'Success'
+
     def __init__(self, value=None):
         self.value = value
         self.type = self.SUCCESS
